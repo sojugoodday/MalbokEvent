@@ -36,7 +36,7 @@
               <div class="diff-title-group">
                 <div class="bottle-icons">
                   <img
-                    src="./image/좋은데이픽셀.png"
+                    src="image/soju_pixel.png"
                     class="diff-bottle-icon"
                     alt="소주병"
                   />
@@ -49,12 +49,12 @@
               <div class="diff-title-group">
                 <div class="bottle-icons">
                   <img
-                    src="./image/좋은데이픽셀.png"
+                    src="image/soju_pixel.png"
                     class="diff-bottle-icon"
                     alt="소주병"
                   />
                   <img
-                    src="./image/좋은데이픽셀.png"
+                    src="image/soju_pixel.png"
                     class="diff-bottle-icon"
                     alt="소주병"
                   />
@@ -67,17 +67,17 @@
               <div class="diff-title-group">
                 <div class="bottle-icons">
                   <img
-                    src="./image/좋은데이픽셀.png"
+                    src="image/soju_pixel.png"
                     class="diff-bottle-icon"
                     alt="소주병"
                   />
                   <img
-                    src="./image/좋은데이픽셀.png"
+                    src="image/soju_pixel.png"
                     class="diff-bottle-icon"
                     alt="소주병"
                   />
                   <img
-                    src="./image/좋은데이픽셀.png"
+                    src="image/soju_pixel.png"
                     class="diff-bottle-icon"
                     alt="소주병"
                   />
@@ -93,56 +93,54 @@
           <div class="title" id="game-title">좋은데이 X 말복 이벤트</div>
         </div>
 
-<!-- ⚙️ 우측 상단 기능 버튼 그룹 (다시하기 / 환경설정 / 공유) -->
+        <!-- ⚙️ 우측 상단 기능 버튼 그룹 -->
         <div class="side-btn-group">
-          <!-- 다시하기 (현재 난이도로 게임 재시작) -->
           <button id="btn-restart" class="icon-btn" onclick="restartGame()" title="다시하기">
             🔄
           </button>
-          <!-- 환경설정 (난이도 선택 화면으로 돌아가기) -->
           <button id="btn-settings" class="icon-btn" onclick="openSettings()" title="난이도 변경">
             ⚙️
           </button>
-          <!-- 공유하기 (링크 복사 / 모바일 공유) -->
           <button id="btn-share" class="icon-btn" onclick="shareGame()" title="공유하기">
             🔗
           </button>
         </div>
         
         <div class="samgyetang-stage">
-          <img src="./image/빈뚝배기2.png" class="part bg-table" alt="배경" />
+          <img src="image/ttukbaegi2.png" class="part bg-table" alt="배경" />
           <img
-            src="./image/몸통.png"
+            src="image/body.png"
             id="part-body"
             class="part part-body"
             alt="몸통"
           />
-          <img src="./image/다리1.png" id="part-1" class="part" alt="다리1" />
-          <img src="./image/다리2.png" id="part-2" class="part" alt="다리2" />
-          <img src="./image/다리3.png" id="part-3" class="part" alt="날개1" />
-          <img src="./image/다리4.png" id="part-4" class="part" alt="날개2" />
+          <img src="image/leg1.png" id="part-1" class="part" alt="다리1" />
+          <img src="image/leg2.png" id="part-2" class="part" alt="다리2" />
+          <img src="image/leg3.png" id="part-3" class="part" alt="날개1" />
+          <img src="image/leg4.png" id="part-4" class="part" alt="날개2" />
 
-          <!-- 🐔 [추가] 실패 연출용 닭 도망치기 박스 -->
+          <!-- 🐔 실패 연출용 닭 도망치기 박스 -->
           <div id="chicken-escape-box" class="chicken-escape-box">
             <div id="poof-effect" class="poof-effect">💥 POOF!</div>
             <img
               id="escaping-chicken"
-              src="./image/닭1.png"
+              src="image/chicken1.png"
               alt="도망치는 닭"
             />
           </div>
+
           <!-- 소주잔 -->
           <div class="glass-wrapper" id="glass-wrapper">
             <div class="soju-liquid" id="soju-liquid"></div>
             <div class="target-line" id="target-line">
               <span class="target-label">적정선</span>
             </div>
-            <img src="./image/소주잔2.png" class="glass-img" alt="소주잔" />
+            <img src="image/glass2.png" class="glass-img" alt="소주잔" />
           </div>
 
           <!-- 소주병 -->
           <img
-            src="./image/좋은데이병2.png"
+            src="image/soju_bottle2.png"
             id="part-bottle"
             class="part"
             alt="좋은데이 병"
@@ -171,31 +169,31 @@
             <div class="label">🍗 먹은 부위</div>
             <div class="chicken-gauge">
               <img
-                src="./image/다리1.png"
+                src="image/leg1.png"
                 class="leg-icon"
                 id="leg-0"
                 alt="부위"
               />
               <img
-                src="./image/다리1.png"
+                src="image/leg1.png"
                 class="leg-icon"
                 id="leg-1"
                 alt="부위"
               />
               <img
-                src="./image/다리1.png"
+                src="image/leg1.png"
                 class="leg-icon"
                 id="leg-2"
                 alt="부위"
               />
               <img
-                src="./image/다리1.png"
+                src="image/leg1.png"
                 class="leg-icon"
                 id="leg-3"
                 alt="부위"
               />
               <img
-                src="./image/다리1.png"
+                src="image/leg1.png"
                 class="leg-icon"
                 id="leg-4"
                 alt="부위"
@@ -208,7 +206,6 @@
     <script src="js/audio.js"></script>
     <script src="js/fireworks.js"></script>
     <script src="js/game.js"></script>
-    <!-- 기존 오디오 태그들 근처에 추가 -->
     <audio
       id="sfx-chicken"
       src="https://assets.mixkit.co/active_storage/sfx/2281/2281-preview.mp3"

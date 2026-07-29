@@ -42,8 +42,9 @@ let pourAnimationFrame = null;
 let fillPercent = 0;
 let targetPercent = 50;
 
-const MAX_LIQUID_HEIGHT_PCT = 42;
-const BASE_BOTTOM_PCT = 30;
+// 소주잔 크기 축소에 맞춰 액체 비율 조정
+const MAX_LIQUID_HEIGHT_PCT = 62;
+const BASE_BOTTOM_PCT = 20;
 
 /* ==========================================
      🚀 게임 시작 및 모달 관련
@@ -165,7 +166,6 @@ function animateChickenEscape(onComplete) {
   const escapeBox = document.getElementById('chicken-escape-box');
   const chickenImg = document.getElementById('escaping-chicken');
 
-  // 1. 남아있는 삼계탕 부위들 잠시 숨기기
   const samgyetangParts = document.querySelectorAll(
     '.samgyetang-stage .part:not(.bg-table):not(#part-bottle)'
   );
@@ -173,25 +173,21 @@ function animateChickenEscape(onComplete) {
     part.style.opacity = '0';
   });
 
-  // 2. 🐔 닭 울음소리 재생 (온라인 MP3)
   const chickenAudio = new Audio(
     'https://assets.mixkit.co/active_storage/sfx/2281/2281-preview.mp3'
   );
-  chickenAudio.volume = 0.7; // 소리 크기 조절 (0.0 ~ 1.0)
+  chickenAudio.volume = 0.7;
   chickenAudio.play().catch((e) => console.log('오디오 재생 실패:', e));
 
-  // 3. 닭1(놀란 모습) 등장
-  chickenImg.src = './image/닭1.png';
+  chickenImg.src = 'image/chicken1.png';
   chickenImg.classList.remove('run-away-left');
   escapeBox.style.display = 'flex';
 
-  // 4. 0.6초 후 닭2(달리기)로 바뀌며 도망
   setTimeout(() => {
-    chickenImg.src = './image/닭2.png';
+    chickenImg.src = 'image/chicken2.png';
     chickenImg.classList.add('run-away-left');
   }, 600);
 
-  // 5. 탈출 애니메이션 완료 후 모달 팝업
   setTimeout(() => {
     escapeBox.style.display = 'none';
 
@@ -204,6 +200,7 @@ function animateChickenEscape(onComplete) {
     if (onComplete) onComplete();
   }, 2500);
 }
+
 function handleFailure() {
   livesLeft--;
   const heartEl = document.getElementById(`heart-${livesLeft}`);
@@ -211,18 +208,16 @@ function handleFailure() {
     heartEl.classList.add('lost');
   }
 
-  // 😭 기회 8번을 모두 소진했을 때만 닭 도망 연출
   if (livesLeft <= 0) {
     animateChickenEscape(() => {
       modalTitle.textContent = '💸 앗... 닭이 도망쳤다!';
       modalBody.innerHTML =
         '소주 다 엎지르고 뭐하노! 닭이 살아 돌아갔다!<br>정신 딱 차리고 손끝에 힘주고 다시 도전해봐라! 🐔💨';
       modalBtn.textContent = '다시 도전하기 🔄';
-      modalBtn.onclick = () => location.reload();
+      modalBtn.onclick = () => restartGame();
       modalOverlay.classList.add('show');
     });
   } else {
-    // 기회가 남아있다면 잔만 리셋
     resetGlass(800);
   }
 }
@@ -248,7 +243,6 @@ function triggerSuccess() {
     eatenCount++;
     resetGlass(600);
 
-    // 완뚝 성공
     if (eatenCount === partOrder.length) {
       setTimeout(() => {
         if (typeof triggerCelebrationFireworks === 'function') {
@@ -259,7 +253,7 @@ function triggerSuccess() {
         modalBody.innerHTML =
           '닭 한 마리 비우고 좋은데이로 완벽하게 적셨다!<br>이 정도 솜씨면 올여름 말복 더위는 끝났다 마!😎<br><br>짠~ 하고 기분 좋게 한 잔 더?';
         modalBtn.textContent = '한 판 더 뛰기 🍻';
-        modalBtn.onclick = () => location.reload();
+        modalBtn.onclick = () => restartGame();
         modalOverlay.classList.add('show');
       }, 700);
     }
@@ -285,28 +279,27 @@ function resetGlass(delay) {
   }, delay);
 }
 
-// ⚙️ 환경설정(난이도 재선택) 버튼
+function restartGame() {
+  location.reload();
+}
+
 function openSettings() {
-  // 게임 화면을 일시정지하거나 초기화 후 시작 화면 표시
   const startScreen = document.getElementById('start-screen');
   if (startScreen) {
     startScreen.style.display = 'flex';
   }
 }
 
-// 🔗 공유하기 버튼
 function shareGame() {
   const shareData = {
     title: '좋은데이 X 말복 이벤트',
     text: '1인칭 소주따르기 타이밍 게임! 함께 즐겨보세요 🍺',
-    url: window.location.href, // 현재 깃허브 웹사이트 주소
+    url: window.location.href,
   };
 
-  // 모바일 공유하기 지원 시
   if (navigator.share) {
     navigator.share(shareData).catch((err) => console.log('공유 취소:', err));
   } else {
-    // PC 등 미지원 브라우저는 클립보드 복사
     navigator.clipboard.writeText(window.location.href).then(() => {
       alert('게임 링크가 클립보드에 복사되었습니다!');
     });
