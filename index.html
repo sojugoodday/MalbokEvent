@@ -93,6 +93,22 @@
           <div class="title" id="game-title">좋은데이 X 말복 이벤트</div>
         </div>
 
+<!-- ⚙️ 우측 상단 기능 버튼 그룹 (다시하기 / 환경설정 / 공유) -->
+        <div class="side-btn-group">
+          <!-- 다시하기 (현재 난이도로 게임 재시작) -->
+          <button id="btn-restart" class="icon-btn" onclick="restartGame()" title="다시하기">
+            🔄
+          </button>
+          <!-- 환경설정 (난이도 선택 화면으로 돌아가기) -->
+          <button id="btn-settings" class="icon-btn" onclick="openSettings()" title="난이도 변경">
+            ⚙️
+          </button>
+          <!-- 공유하기 (링크 복사 / 모바일 공유) -->
+          <button id="btn-share" class="icon-btn" onclick="shareGame()" title="공유하기">
+            🔗
+          </button>
+        </div>
+        
         <div class="samgyetang-stage">
           <img src="./image/빈뚝배기2.png" class="part bg-table" alt="배경" />
           <img
