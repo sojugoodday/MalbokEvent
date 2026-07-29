@@ -285,6 +285,34 @@ function resetGlass(delay) {
   }, delay);
 }
 
+// ⚙️ 환경설정(난이도 재선택) 버튼
+function openSettings() {
+  // 게임 화면을 일시정지하거나 초기화 후 시작 화면 표시
+  const startScreen = document.getElementById('start-screen');
+  if (startScreen) {
+    startScreen.style.display = 'flex';
+  }
+}
+
+// 🔗 공유하기 버튼
+function shareGame() {
+  const shareData = {
+    title: '좋은데이 X 말복 이벤트',
+    text: '1인칭 소주따르기 타이밍 게임! 함께 즐겨보세요 🍺',
+    url: window.location.href, // 현재 깃허브 웹사이트 주소
+  };
+
+  // 모바일 공유하기 지원 시
+  if (navigator.share) {
+    navigator.share(shareData).catch((err) => console.log('공유 취소:', err));
+  } else {
+    // PC 등 미지원 브라우저는 클립보드 복사
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      alert('게임 링크가 클립보드에 복사되었습니다!');
+    });
+  }
+}
+
 /* 마우스/터치 이벤트 등록 */
 bottle.addEventListener('mousedown', startPouring);
 window.addEventListener('mouseup', stopPouring);
