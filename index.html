@@ -8,7 +8,7 @@
     />
     <title>좋은데이 X 말복 이벤트 - 1인칭 소주 따르기 게임</title>
     <!-- CSS 스타일시트 연결 -->
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
     <div id="game-scaler">
@@ -19,6 +19,86 @@
             <h3 id="modal-title">말복 특선!</h3>
             <p id="modal-body"></p>
             <button id="modal-btn" class="modal-btn">시작하기</button>
+          </div>
+        </div>
+        <!-- ⚙️ 난이도 변경 설정 모달 팝업 -->
+        <div id="settings-overlay" class="modal-overlay">
+          <div class="modal-box settings-modal-box">
+            <h3>⚙️ 난이도 선택</h3>
+            <p>원하는 난이도를 선택해 보세요!</p>
+
+            <div class="difficulty-container popup-diff-container">
+              <button
+                class="btn-diff btn-easy"
+                onclick="changeDifficulty('easy')"
+              >
+                <div class="diff-title-group">
+                  <div class="bottle-icons">
+                    <img
+                      src="image/soju_pixel.png"
+                      class="diff-bottle-icon"
+                      alt="소주병"
+                    />
+                  </div>
+                  <span class="diff-label">하 (Easy)</span>
+                </div>
+              </button>
+
+              <button
+                class="btn-diff btn-normal"
+                onclick="changeDifficulty('normal')"
+              >
+                <div class="diff-title-group">
+                  <div class="bottle-icons">
+                    <img
+                      src="image/soju_pixel.png"
+                      class="diff-bottle-icon"
+                      alt="소주병"
+                    />
+                    <img
+                      src="image/soju_pixel.png"
+                      class="diff-bottle-icon"
+                      alt="소주병"
+                    />
+                  </div>
+                  <span class="diff-label">중 (Normal)</span>
+                </div>
+              </button>
+
+              <button
+                class="btn-diff btn-hard"
+                onclick="changeDifficulty('hard')"
+              >
+                <div class="diff-title-group">
+                  <div class="bottle-icons">
+                    <img
+                      src="image/soju_pixel.png"
+                      class="diff-bottle-icon"
+                      alt="소주병"
+                    />
+                    <img
+                      src="image/soju_pixel.png"
+                      class="diff-bottle-icon"
+                      alt="soju_pixel"
+                    />
+                    <img
+                      src="image/soju_pixel.png"
+                      class="diff-bottle-icon"
+                      alt="soju_pixel"
+                    />
+                  </div>
+                  <span class="diff-label">상 (Hard)</span>
+                </div>
+              </button>
+            </div>
+
+            <button
+              id="settings-close-btn"
+              class="modal-btn cancel-btn"
+              onclick="closeSettings()"
+            >
+              계속하기
+            </button>
           </div>
         </div>
         <!-- 폭죽 터짐 Canvas -->
@@ -95,17 +175,32 @@
 
         <!-- ⚙️ 우측 상단 기능 버튼 그룹 -->
         <div class="side-btn-group">
-          <button id="btn-restart" class="icon-btn" onclick="restartGame()" title="다시하기">
+          <button
+            id="btn-restart"
+            class="icon-btn"
+            onclick="restartGame()"
+            title="다시하기"
+          >
             🔄
           </button>
-          <button id="btn-settings" class="icon-btn" onclick="openSettings()" title="난이도 변경">
+          <button
+            id="btn-settings"
+            class="icon-btn"
+            onclick="openSettings()"
+            title="난이도 변경"
+          >
             ⚙️
           </button>
-          <button id="btn-share" class="icon-btn" onclick="shareGame()" title="공유하기">
+          <button
+            id="btn-share"
+            class="icon-btn"
+            onclick="shareGame()"
+            title="공유하기"
+          >
             🔗
           </button>
         </div>
-        
+
         <div class="samgyetang-stage">
           <img src="image/ttukbaegi2.png" class="part bg-table" alt="배경" />
           <img

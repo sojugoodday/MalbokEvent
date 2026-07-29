@@ -352,45 +352,51 @@ body {
 }
 
 .part-body {
-  top: 25%;
+  top: 27%;
   left: 15%;
   width: 75%;
   z-index: 2;
 }
 
 #part-1 {
-  top: 37%;
-  left: 39%;
-  width: 38%;
+  top: 38%;
+  left: 36%;
+  width: 41%;
   z-index: 5;
   transform: rotate(-10deg);
 }
 
 #part-2 {
-  top: 33%;
-  left: 19%;
+  top: 36%;
+  left: 21%;
   width: 26%;
   z-index: 4;
 }
 
 #part-3 {
-  top: 25%;
-  left: 29%;
-  width: 29%;
+  top: 29%;
+  left: 26%;
+  width: 26%;
   z-index: 3;
+  transform: rotate(-10deg);
 }
 
 #part-4 {
-  top: 25%;
-  left: 45%;
-  width: 37%;
+  top: 27%;
+  left: 48%;
+  width: 35%;
   z-index: 2;
 }
 
+/* ==========================================
+   🍗 먹은 부위 숨김 처리
+   ========================================== */
 .part.eaten {
-  opacity: 0;
+  opacity: 0 !important;
+  visibility: hidden !important;
   transform: translateY(-30px) scale(0.8) !important;
-  pointer-events: none;
+  pointer-events: none !important;
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease !important;
 }
 
 /* ==========================================
@@ -680,4 +686,30 @@ body {
 #escaping-chicken.run-away-left {
   transform: translate(-500px, -10%) scale(0.85);
   opacity: 0;
+}
+
+/* ==========================================
+   ⚙️ 난이도 설정 모달 스타일
+   ========================================== */
+.settings-modal-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.popup-diff-container {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.modal-btn.cancel-btn {
+  background: #6c757d;
+  color: #ffffff;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.modal-btn.cancel-btn:active {
+  background: #495057;
 }

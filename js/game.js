@@ -19,9 +19,9 @@ let isPouring = false;
 let currentDifficulty = 'easy';
 
 const fillSpeeds = {
-  easy: 0.25,
-  normal: 0.45,
-  hard: 0.95,
+  easy: 0.2,
+  normal: 0.4,
+  hard: 0.8,
 };
 
 /* DOM 요소 연결 */
@@ -65,7 +65,7 @@ function startGame(diff) {
 function showInstructionModal() {
   modalTitle.textContent = '🐔 말복 특선! 몸보신하러 왔나?';
   modalBody.innerHTML =
-    '말복이라 삼계탕 집에 온 당신!<br>삼계탕에는 자고로 <b>좋은데이</b> 한 잔 딱 <br>채워줘야 몸보신 완성인 거 알제?<br><br>잔 잘보고 적정선 맞춰서 콸콸콸 따라봐라!<br>뚝배기 싹 비울 때까지 가보자고~ 🔥';
+    '말복이라 삼계탕 집에 온 당신!<br>삼계탕에는 자고로 <b>좋은데이</b> 한 잔 딱 <br>채워줘야 몸보신 완성인 거 알제?<br><br>닭 식기 전에 얼른 함 따라봐라!<br>뚝배기 싹 비울 때까지 가보자고~ 🔥';
   modalBtn.textContent = '시작하기';
 
   modalBtn.onclick = () => {
@@ -210,9 +210,9 @@ function handleFailure() {
 
   if (livesLeft <= 0) {
     animateChickenEscape(() => {
-      modalTitle.textContent = '💸 앗... 닭이 도망쳤다!';
+      modalTitle.textContent = '💸 앗... 삼계탕이 도망쳤다!';
       modalBody.innerHTML =
-        '소주 다 엎지르고 뭐하노! 닭이 살아 돌아갔다!<br>정신 딱 차리고 손끝에 힘주고 다시 도전해봐라! 🐔💨';
+        '이 무슨..기다리다 지친 닭이 부활했다!<br>정신 딱 차리고 손끝에 힘주고 다시 도전해봐라! 🐔💨';
       modalBtn.textContent = '다시 도전하기 🔄';
       modalBtn.onclick = () => restartGame();
       modalOverlay.classList.add('show');
@@ -233,9 +233,13 @@ function triggerSuccess() {
     showPopup('쩝쩝... 🍗', '#ffea00');
     if (typeof playSFX === 'function') playSFX('eat');
 
+    // game.js 중 triggerSuccess 일부
     const targetId = partOrder[eatenCount];
     const targetEl = document.getElementById(targetId);
-    if (targetEl) targetEl.classList.add('eaten');
+    if (targetEl) {
+      targetEl.style.opacity = ''; // inline 스타일 제거하여 CSS 규칙이 100% 적용되도록 보장
+      targetEl.classList.add('eaten');
+    }
 
     const legIcon = document.getElementById(`leg-${eatenCount}`);
     if (legIcon) legIcon.classList.add('eaten');
@@ -251,7 +255,7 @@ function triggerSuccess() {
 
         modalTitle.textContent = '🏆 완뚝 성공! 원기회복 완료!';
         modalBody.innerHTML =
-          '닭 한 마리 비우고 좋은데이로 완벽하게 적셨다!<br>이 정도 솜씨면 올여름 말복 더위는 끝났다 마!😎<br><br>짠~ 하고 기분 좋게 한 잔 더?';
+          '닭 한 마리 비우고 좋은데이로 완벽하게 적셨다!<br>이 정도 솜씨면 올여름 말복 더위는 끝났다 마!<br><br>짠~ 하고 기분 좋게 한 잔 더?😎';
         modalBtn.textContent = '한 판 더 뛰기 🍻';
         modalBtn.onclick = () => restartGame();
         modalOverlay.classList.add('show');
@@ -283,13 +287,41 @@ function restartGame() {
   location.reload();
 }
 
+/* ==========================================
+   ⚙️ 설정 팝업 및 난이도 실시간 변경
+   ========================================== */
+
+// 1. 우측 상단 ⚙️ 버튼 클릭 시 팝업 열기
 function openSettings() {
-  const startScreen = document.getElementById('start-screen');
-  if (startScreen) {
-    startScreen.style.display = 'flex';
+  const settingsOverlay = document.getElementById('settings-overlay');
+  if (settingsOverlay) {
+    settingsOverlay.classList.add('show');
   }
 }
 
+// 2. '계속하기' 버튼 클릭 시 팝업만 닫기 (하던 게임 계속 진행)
+function closeSettings() {
+  const settingsOverlay = document.getElementById('settings-overlay');
+  if (settingsOverlay) {
+    settingsOverlay.classList.remove('show');
+  }
+}
+
+// 3. 팝업 안에서 난이도를 클릭했을 때 적용 처리
+function changeDifficulty(diff) {
+  currentDifficulty = diff;
+  glassWrapper.className = 'glass-wrapper diff-' + diff;
+
+  const diffText = diff === 'easy' ? '하' : diff === 'normal' ? '중' : '상';
+  gameTitle.textContent = `타이밍 잔! [난이도: ${diffText}]`;
+
+  // 선택 완료 후 설정 팝업 닫기
+  closeSettings();
+}
+
+/* ==========================================
+   🔗 공유하기 기능 (데스크톱/모바일 호환)
+   ========================================== */
 function shareGame() {
   const shareData = {
     title: '좋은데이 X 말복 이벤트',
@@ -297,13 +329,131 @@ function shareGame() {
     url: window.location.href,
   };
 
-  if (navigator.share) {
+  // 모바일 브라우저 체크
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+
+  // 모바일이면서 Web Share API를 지원하는 경우 시스템 공유창 호출
+  if (isMobile && navigator.share) {
     navigator.share(shareData).catch((err) => console.log('공유 취소:', err));
   } else {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      alert('게임 링크가 클립보드에 복사되었습니다!');
-    });
+    // 데스크톱(PC) 환경이거나 Share API 미지원 시 클립보드 복사 후 alert 팝업
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard
+        .writeText(window.location.href)
+        .then(() => {
+          alert('링크 복사 완료!');
+        })
+        .catch(() => {
+          fallbackCopyTextToClipboard(window.location.href);
+        });
+    } else {
+      fallbackCopyTextToClipboard(window.location.href);
+    }
   }
+}
+
+// 클립보드 복사 레거시(HTTP/구형 브라우저) 대응 헬퍼 함수
+function fallbackCopyTextToClipboard(text) {
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.style.top = '0';
+  textArea.style.left = '0';
+  textArea.style.position = 'fixed';
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    const successful = document.execCommand('copy');
+    if (successful) {
+      alert('링크 복사 완료!');
+    } else {
+      alert('링크 복사에 실패했습니다.');
+    }
+  } catch (err) {
+    alert('링크 복사에 실패했습니다.');
+  }
+
+  document.body.removeChild(textArea);
+}
+// 클립보드 복사 레거시(구형 브라우저/HTTP 환경) 대응 헬퍼 함수
+function fallbackCopyTextToClipboard(text) {
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.style.top = '0';
+  textArea.style.left = '0';
+  textArea.style.position = 'fixed';
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    const successful = document.execCommand('copy');
+    if (successful) {
+      showPopup('링크 복사 완료! 🔗', '#00ff9d');
+    } else {
+      showPopup('복사 실패 😢', '#ff5577');
+    }
+  } catch (err) {
+    showPopup('복사 실패 😢', '#ff5577');
+  }
+
+  document.body.removeChild(textArea);
+}
+
+/* ==========================================
+   🔄 게임 재시작 및 상태 초기화
+   ========================================== */
+function restartGame() {
+  // 1. 진행 중인 애니메이션 및 타이머 정지
+  if (pourAnimationFrame) {
+    cancelAnimationFrame(pourAnimationFrame);
+    pourAnimationFrame = null;
+  }
+  isPouring = false;
+
+  // 2. 게임 변수 초기화
+  eatenCount = 0;
+  livesLeft = 8;
+  fillPercent = 0;
+
+  // 3. 소주병 & 액체 상태 리셋
+  bottle.classList.remove('pouring');
+  liquid.style.height = '0%';
+  if (typeof stopPourSound === 'function') stopPourSound();
+
+  // 4. 모달 및 팝업 닫기
+  modalOverlay.classList.remove('show');
+  popup.classList.remove('show');
+
+  // 5. 삼계탕 부위 오파시티 & 위치 복구
+  const samgyetangParts = document.querySelectorAll('.samgyetang-stage .part');
+  samgyetangParts.forEach((part) => {
+    part.classList.remove('eaten');
+    part.style.opacity = '1';
+  });
+
+  // 6. 닭 탈출 연출 박스 숨기기
+  const escapeBox = document.getElementById('chicken-escape-box');
+  if (escapeBox) escapeBox.style.display = 'none';
+
+  // 7. 하단 UI (목숨 & 먹은 부위) 아이콘 초기화
+  for (let i = 0; i < 8; i++) {
+    const heartEl = document.getElementById(`heart-${i}`);
+    if (heartEl) heartEl.classList.remove('lost');
+  }
+
+  for (let i = 0; i < partOrder.length; i++) {
+    const legIcon = document.getElementById(`leg-${i}`);
+    if (legIcon) legIcon.classList.remove('eaten');
+  }
+
+  // 8. 시작 화면은 숨기고 목표선 랜덤재설정으로 바로 시작
+  startScreen.style.display = 'none';
+  randomizeTarget();
 }
 
 /* 마우스/터치 이벤트 등록 */
