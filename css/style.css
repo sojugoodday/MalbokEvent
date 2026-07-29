@@ -250,6 +250,41 @@ body {
   font-weight: bold;
 }
 
+/* ⚙️ 우측 상단 버튼 그룹 스타일 */
+.side-btn-group {
+  position: absolute;
+  top: 90px; /* 헤더 바로 아래 위치 */
+  right: 16px;
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  gap: 10px;
+  z-index: 50; /* 게임 요소보다 위 */
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(25, 46, 98, 0.85);
+  border: 2px solid #eef6ff;
+  color: #eef6ff;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.icon-btn:hover,
+.icon-btn:active {
+  transform: scale(1.1);
+  background: #eef6ff;
+  color: #192e62;
+}
+
 .chicken-gauge,
 .life-gauge {
   display: flex;
@@ -414,8 +449,8 @@ body {
 .soju-liquid {
   position: absolute;
   bottom: 30%;
-  left: 31.5%;
-  width: 38.5%;
+  left: 27%;
+  width: 47%;
   height: 0%;
   background: linear-gradient(
     180deg,
